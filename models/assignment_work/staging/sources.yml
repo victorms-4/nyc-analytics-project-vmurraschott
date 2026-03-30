@@ -89,10 +89,9 @@ sources:
             description: Y coordinate in NY State Plane projection system (NAD 83)
           - name: landmark
             description: Nearby landmark or point of interest
-
-      - name: source_dot_open_restaurants_applications_history
+      - name: source_nyc_open_restaurant_apps
         description: |
-          NYC oen restaurant applications for Dept of Transportation.
+          NYC open restaurant applications for Dept of Transportation.
           One row per application.
         columns:
           - name: objectid
