@@ -24,17 +24,17 @@ models:
    assignment_work:
      staging:
        +materialized: table
-       +schema: nyc_transit_restaurants_staging
+       +schema: cis_9440_group_project_staging # Dataset name for the staging for project
 
      marts:
        +materialized: table
-       +schema: nyc_transit_restaurants_marts
+       +schema: cis_9440_group_project_warehouse_marts # Dataset name for the warehouse marts for data project
       
        shared:
          +materialized: table
 
-       open_restaurant_apps:
+       motor_veh_collision:
          +materialized: table
 
-       dot_311:
+       street_complaints_311:
          +materialized: table
