@@ -3,7 +3,7 @@ WITH veh_collision_data AS (
    FROM (
     SELECT *
         ,ROW_NUMBER() OVER (PARTITION BY collision_id ORDER BY crash_date DESC) AS RN
-    FROM {{ source('raw', 'source_nyc_motor_vehicle_collision') }}
+    FROM {{ source('raw', 'load-nyc-motor-vehicle-collision-data') }}
    ) row_num
    WHERE RN = 1 -- removes duplicates
 )
