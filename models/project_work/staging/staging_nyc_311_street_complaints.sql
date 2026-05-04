@@ -1,8 +1,8 @@
--- Clean and standardize 311 DOT service request data
--- One row per service request
+-- Clean and standardize 311 DOT Street Complaint data
+-- One row per complaint
 
 WITH source AS (
-   SELECT * FROM {{ source('raw', 'source_dot_service_requests_history') }}
+   SELECT * FROM {{ source('raw', 'source_nyc_311_streetcomplaints') }}
 ), -- Easier to refer to the dbt reference to a long name table this way
 
 cleaned AS (
@@ -81,7 +81,7 @@ cleaned AS (
    FROM source
 
    -- Filters
-   WHERE (agency = 'DOT' OR agency_name LIKE '%Transportation%')
+   WHERE (complaint_type = 'Street Condition')
    AND unique_key IS NOT NULL
    AND created_date IS NOT NULL
    AND CAST(created_date AS DATE) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 YEAR)

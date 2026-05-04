@@ -1,9 +1,17 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
 name: 'nyc_analytics'
 version: '1.0.0'
 config-version: 2
-# Some default settings for dbt
+
+# This setting configures which "profile" dbt uses for this project.
 profile: 'default'
 
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -11,30 +19,60 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target"
-clean-targets:
- - "target"
- - "dbt_packages"
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
 
-# Set up models, which are basically SQL files, to create tables
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In dbt, the default materialization for a model is a view. This means, when you run 
+# dbt run or dbt build, all of your models will be built as a view in your data platform. 
+# The configuration below will override this setting for models in the example folder to 
+# instead be materialized as tables. Any models you add to the root of the models folder will 
+# continue to be built as views. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+
 models:
- nyc_analytics:
-   +materialized: table
+  nyc_analytics:
+    +materialized: table
 
-   assignment_work:
-     staging:
-       +materialized: table
-       +schema: cis_9440_group_project_staging # Dataset name for the staging for project
+    assignment_work:
+      staging:
+        +materialized: table
+        +schema: nyc_transit_restaurants_staging
 
-     marts:
-       +materialized: table
-       +schema: cis_9440_group_project_warehouse_marts # Dataset name for the warehouse marts for data project
+      marts:
+        +materialized: table
+        +schema: nyc_transit_restaurants_marts
       
-       shared:
-         +materialized: table
+        shared:
+          +materialized: table
 
-       motor_veh_collision:
-         +materialized: table
+        open_restaurant_apps:
+          +materialized: table
 
-       street_complaints_311:
-         +materialized: table
+        dot_311:
+          +materialized: table
+
+# adding project work schema
+
+    project_work:
+      staging:
+        +materialized: table
+        +schema: cis_9440_group_project_staging # dataset name for the staging data for project
+
+      marts:
+        +materialized: table
+        +schema: cis_9440_group_project_warehouse_marts # dataset name for the warehouse marts data for project
+      
+        shared:
+          +materialized: table
+
+        motor_veh_collision:
+          +materialized: table
+
+        street_complaints_311:
+          +materialized: table
